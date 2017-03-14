@@ -321,15 +321,15 @@ RUN echo "Success"
 	- Thứ nhất là phần khai báo để docker tải về ảnh một hệ điều hành cơ sở cho image mình sẽ cài đặt. 
 	Ở đây mình dùng server centos bằng lệnh FROM centos. Lưu ý tên image bắt buộc phải viết chữ thường không được đặt tên bằng chữ hoa.
 	- Phần thứ hai là phần cài đặt bằng các lệnh mà ta phải chạy khi cài đặt.
-	Lệnh "RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm "
+	Lệnh `RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm`
 	Sẽ cài đặt thông tin cài đặt nginx phiên bản mới nhất được cập nhật.
-	Lệnh "RUN yum -y install nginx " dùng để cài đặt nginx.
-	Lệnh "CMD /usr/sbin/nginx" sẽ là lệnh mặc định khi bạn chạy docker nếu không nhập lệnh vào cuối lệnh docker run như ví dụ trước.
+	Lệnh `RUN yum -y install nginx` dùng để cài đặt nginx.
+	Lệnh `CMD /usr/sbin/nginx` sẽ là lệnh mặc định khi bạn chạy docker nếu không nhập lệnh vào cuối lệnh docker run như ví dụ trước.
 	- Phần thứ ba sẽ là các lệnh cấu hình cho server nginx.
-	Lệnh "USER root" là chuyển tài khoản người dùng sang tài khoản root tương đương với lệnh su - root nhưng bạn không cần phải nhập mật khẩu.
-	Lệnh VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"] để khai báo các thư mục nginx sẽ sử dụng.
-	Lệnh "WORKDIR /etc/nginx" sẽ chuyển đến thư mục /etc/nginx khi chạy tương đương lệnh cd /etc/nginx.
-	Lệnh "EXPOSE 80" khai báo cho docker biết bạn sẽ dùng cổng nào.
+	Lệnh `USER root` là chuyển tài khoản người dùng sang tài khoản root tương đương với lệnh su - root nhưng bạn không cần phải nhập mật khẩu.
+	Lệnh `VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]` để khai báo các thư mục nginx sẽ sử dụng.
+	Lệnh `WORKDIR /etc/nginx` sẽ chuyển đến thư mục `/etc/nginx` khi chạy tương đương lệnh `cd /etc/nginx`.
+	Lệnh `EXPOSE 80` khai báo cho docker biết bạn sẽ dùng cổng nào.
 
 - Sau đó chúng ta sẽ dùng lệnh sau để build ra một ảnh (image) mới
 ```sh
