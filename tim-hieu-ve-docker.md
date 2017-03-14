@@ -250,10 +250,15 @@ docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <im
 
 - Khi cần gán port (NAT 1-1) giữa máy tính ngoài và docker ta làm như sau:
 ```sh
-docker run -v /abc:/abc -p 8080:8080 -it ubuntu /bin/bash
+docker run -v /abc:/xyz -p 8080:8080 -it ubuntu /bin/bash
 ```
+	- v mount thư mục /abc trên máy ngoài vào thư mục /xyz trong container
+	- i kết nối với stdin và stdout
+	- t khởi tạo một terminal
+	- p port forward, truy cập cổng 8080 trong container bằng cộng 8080 trên máy tính ngoài
+	- Muốn thoát mà không bị tắt container nhấn `ctl+p` và `ctl+q`
 
-# Test
+# Test docker
 
 ## MySQL
 
@@ -285,6 +290,52 @@ mysql>
 ```sh
 root@ELKServer2:~/code# apt-get install mysql-client-core-5.5
 ```
+
+# Dockerfile
+
+Bình thường ta tạo một container từ image download trên docker hub về, nhưng chúng ta có thể tạo ra được các image của riêng mình từ các image mẫu.
+Để làm được điều này, ta sử dụng dockerfile.
+
+Có thể hình dung dockerfile sẽ chỉ dẫn cho chương trình làm một số việc mặc định ngay từ đầu. Ta ví dụ build 1 container nginx trên centos
+
+- Tạo ra một tập tin `Dockerfile` với nội dung sau:
+```sh
+FROM centos
+MAINTAINER techmaster.vn
+RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm
+# Install base stuff.
+RUN yum -y install nginx unzip
+RUN echo "daemon off;" &gt;&gt; /etc/nginx/nginx.conf 
+CMD /usr/sbin/nginx
+# Define mountable directories.
+VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
+USER root
+# Define working directory.
+WORKDIR /etc/nginx
+# Expose ports.
+EXPOSE 80
+RUN echo "Success"
+```
+
+- Giải thích các thông tin trong file `Dockerfile` trên
+	- Thứ nhất là phần khai báo để docker tải về ảnh một hệ điều hành cơ sở cho image mình sẽ cài đặt. 
+	Ở đây mình dùng server centos bằng lệnh FROM centos. Lưu ý tên image bắt buộc phải viết chữ thường không được đặt tên bằng chữ hoa.
+	- Phần thứ hai là phần cài đặt bằng các lệnh mà ta phải chạy khi cài đặt.
+	Lệnh "RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm "
+	Sẽ cài đặt thông tin cài đặt nginx phiên bản mới nhất được cập nhật.
+	Lệnh "RUN yum -y install nginx " dùng để cài đặt nginx.
+	Lệnh "CMD /usr/sbin/nginx" sẽ là lệnh mặc định khi bạn chạy docker nếu không nhập lệnh vào cuối lệnh docker run như ví dụ trước.
+	- Phần thứ ba sẽ là các lệnh cấu hình cho server nginx.
+	Lệnh "USER root" là chuyển tài khoản người dùng sang tài khoản root tương đương với lệnh su - root nhưng bạn không cần phải nhập mật khẩu.
+	Lệnh VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"] để khai báo các thư mục nginx sẽ sử dụng.
+	Lệnh "WORKDIR /etc/nginx" sẽ chuyển đến thư mục /etc/nginx khi chạy tương đương lệnh cd /etc/nginx.
+	Lệnh "EXPOSE 80" khai báo cho docker biết bạn sẽ dùng cổng nào.
+
+- Sau đó chúng ta sẽ dùng lệnh sau để build ra một ảnh (image) mới
+```sh
+# docker build –t nginx 
+```
+	- Lệnh này sẽ thông báo cho docker tìm trong thư mục hiện tại "." xem có tệp Dockerfile không. Nếu có hãy tạo một ảnh mới theo các lệnh trong tệp đó
 
 	
 # Tham khảo
