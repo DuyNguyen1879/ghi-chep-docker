@@ -248,7 +248,7 @@ sudo docker images
 docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <image name> /bin/bash
 ```
 
-- Khi cần gán port (NAT) ta làm như sau:
+- Khi cần gán port (NAT 1-1) giữa máy tính ngoài và docker ta làm như sau:
 ```sh
 docker run -v /abc:/abc -p 8080:8080 -it ubuntu /bin/bash
 ```
