@@ -301,11 +301,11 @@ Có thể hình dung dockerfile sẽ chỉ dẫn cho chương trình làm một 
 - Tạo ra một tập tin `Dockerfile` với nội dung sau:
 ```sh
 FROM centos
-MAINTAINER techmaster.vn
+MAINTAINER tannt
 RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm
 # Install base stuff.
 RUN yum -y install nginx unzip
-RUN echo "daemon off;" &gt;&gt; /etc/nginx/nginx.conf 
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
 CMD /usr/sbin/nginx
 # Define mountable directories.
 VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
@@ -333,17 +333,17 @@ RUN echo "Success"
 
 - Sau đó chúng ta sẽ dùng lệnh sau để build ra một ảnh (image) mới
 ```sh
-# docker build –t nginx 
+# docker build -t nginx . 
 ```
 
-	- Lệnh này sẽ thông báo cho docker tìm trong thư mục hiện tại "." xem có tệp Dockerfile không. Nếu có hãy tạo một ảnh mới theo các lệnh trong tệp đó
+- Lệnh này sẽ thông báo cho docker tìm trong thư mục hiện tại "." xem có tệp Dockerfile không. Nếu có hãy tạo một ảnh mới theo các lệnh trong tệp đó
 
 - Chạy lệnh sau để tạo container từ image nginx vừa tạo trên
 ```sh
 docker run --name <tên phiên> -p 80:80 -d –it nginx
 ```
 
-	- Để khởi động server nginx. Trong đó `--name` là không bắt buộc, tham số `-p 80:80` là khai báo cổng docker và cổng máy chủ sẽ mở ở đây là cổng 80.
+- Để khởi động server nginx. Trong đó `--name` là không bắt buộc, tham số `-p 80:80` là khai báo cổng docker và cổng máy chủ sẽ mở ở đây là cổng 80.
 	
 # Tham khảo
 - [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started)
