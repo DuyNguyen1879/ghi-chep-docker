@@ -335,6 +335,7 @@ RUN echo "Success"
 ```sh
 # docker build –t nginx 
 ```
+
 	- Lệnh này sẽ thông báo cho docker tìm trong thư mục hiện tại "." xem có tệp Dockerfile không. Nếu có hãy tạo một ảnh mới theo các lệnh trong tệp đó
 
 	
