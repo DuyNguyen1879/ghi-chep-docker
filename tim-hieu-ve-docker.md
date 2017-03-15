@@ -1,8 +1,9 @@
 ﻿# 1. Giới thiệu
 
 Có thể hiểu một cách cơ bản, docker là ảo hóa ở tầng ứng dụng. Nghĩa là nó đóng gói mọi thứ (thư viện, môi trường) để một ứng dụng có thể chạy 
-bình thường mà không cần cài đặt thêm bất cứ thứ gì. Các gói được đóng này gọi là Container. Trên một HĐH đang sử dụng, bạn có thể chạy cùng lúc vào 
-Container về MySQL với các version khác nhau để so sánh tính năng. Việc này rất khó thực hiện nếu bạn cài trực tiếp MySQL trên OS đang sử dụng.
+bình thường mà không cần cài đặt thêm bất cứ thứ gì. Các gói được đóng này gọi là Image, từ image ta sẽ tạo ra các container. 
+Trên một HĐH đang sử dụng, bạn có thể chạy cùng lúc vài Container về MySQL với các version khác nhau để so sánh tính năng. 
+Việc này rất khó thực hiện nếu bạn cài trực tiếp MySQL trên OS đang sử dụng.
 
 # 2. Cài đặt
 
@@ -302,7 +303,7 @@ Có thể hình dung dockerfile sẽ chỉ dẫn cho chương trình làm một 
 ```sh
 FROM centos
 MAINTAINER tannt
-RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release- centos-7-0.el7.ngx.noarch.rpm
+RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
 # Install base stuff.
 RUN yum -y install nginx unzip
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
