@@ -253,11 +253,13 @@ docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <im
 ```sh
 docker run -v /abc:/xyz -p 8080:8080 -it ubuntu /bin/bash
 ```
-	- v mount thư mục /abc trên máy ngoài vào thư mục /xyz trong container
-	- i kết nối với stdin và stdout
-	- t khởi tạo một terminal
-	- p port forward, truy cập cổng 8080 trong container bằng cộng 8080 trên máy tính ngoài
+	- `-v` mount thư mục /abc trên máy ngoài vào thư mục /xyz trong container
+	- `-i` kết nối với stdin và stdout
+	- `-t` khởi tạo một terminal
+	- `-p` port forward, truy cập cổng 8080 trong container bằng cộng 8080 trên máy tính ngoài
 	- Muốn thoát mà không bị tắt container nhấn `ctl+p` và `ctl+q`
+	- `-d` tùy chọn detached nếu muốn container chạy backgroud ngay sau lệnh thì thêm vào
+	- `--name` đặt tên cho container, không sử dụng tên mặc định của docker sinh ra
 
 # Test docker
 
@@ -346,6 +348,72 @@ docker run --name <tên phiên> -p 80:80 -d –it nginx
 
 - Để khởi động server nginx. Trong đó `--name` là không bắt buộc, tham số `-p 80:80` là khai báo cổng docker và cổng máy chủ sẽ mở ở đây là cổng 80.
 	
+# Một vài lưu ý
+
+- Chạy docker với một user chỉ định trong hệ thống
+```sh
+sudo docker daemon --userns-remap=tannt &
+```
+
+- Xóa images và container:
+```sh
+container
+docker rm $(docker ps -q -a)
+
+image
+docker rmi $(docker images -q -a)
+```
+
+- Dựng docker nginx, muốn test website ta mount thư mục website để có thể chỉnh sửa và lưu trữ tùy ý
+```sh
+docker run --name docker-nginx -p 80:80 -v /root/html/:/usr/share/nginx/html -d nginx
+```
+
+- Copy tập tin cấu hình của nginx từ container ra ngoài để có thể chỉnh sửa theo ý muốn
+```sh
+docker cp docker-nginx:/etc/nginx/conf.d/default.conf default.conf
+```
+
+- Sau khi chỉnh sửa cấu hình xong, bạn muốn apply cấu hình và thư mục web mới thì sử dụng câu lệnh sau. nhớ rm container đang có
+```sh
+docker run --name docker-nginx -p 80:80 -v /root/html/:/usr/share/nginx/html -v /root/html/default.conf:/etc/nginx/conf.d/default.conf -d nginx
+```
+
+- Tạo một container nginx và start nginx khi khởi động bằng lệnh
+```sh
+docker run -d -p 80:80 my_image nginx -g 'daemon off;'
+```
+
+- Để build một image từ dockerfile với image mới nhất (pull về) bằng lệnh
+```sh
+docker build --pull -t the_image_name .
+```
+
+- Khởi chạy container với một network do người dùng khởi tạo
+```sh
+# create network
+docker network create --driver bridge my-net
+# dockerfile có nội dung sau:
+FROM centos:latest
+
+RUN yum -y install epel-release \
+        && yum -y install python34 python-pip python-devel gcc gcc-c++ \
+    && pip install --upgrade pip \
+    && pip install flask uwsgi
+
+COPY ./ /simple_flask
+WORKDIR /simple_flask
+
+CMD ["uwsgi", "--ini", "wsgi.ini"]
+
+# build
+docker build -t xavivn/simple_flask .
+# <Tên cá nhân hoặc tổ chức>/<Tên dịch vụ>:<version>
+
+# run
+docker run -itd --net=my-net --name=simple_flask  xavivn/simple_flask:latest
+```
+
 # Tham khảo
 - [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started)
 - [https://kipalog.com/posts/Toi-da-dung-Docker-nhu-the-nao](https://kipalog.com/posts/Toi-da-dung-Docker-nhu-the-nao)
