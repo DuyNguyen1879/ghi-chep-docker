@@ -77,7 +77,10 @@ tiếp với docker engine một cách bảo mật.
 
 là một công cụ giúp chúng ta tạo ra một clustering Docker. Nó giúp chúng ta gom nhiều Docker Engine lại với nhau và 
 ta có thể "nhìn" nó như duy nhất một virtual Docker Engine. Tất nhiên là bất cứ công cụ nào có thể giao tiếp với 
-Docker Engine thì cũng sẽ giao tiếp với Docker Swarm bình thường theo đúng chuẩn Docker API, và tất nhiên là trong suốt.
+Docker Engine thì cũng sẽ giao tiếp với Docker Swarm bình thường theo đúng chuẩn Docker API, và tất nhiên là trong suốt. 
+Một cụm Swarm có thể được cấu hình và deploy thông qua Docker-Machine. Và theo như bài test của Docker thì họ có thể scale ra 30.000 container 
+trên 1000 node AWS với chỉ một Swarm Manager. Bạn có thể xem nó tương tự như Kubernetes, nhưng theo Docker thì công cụ Swarm của họ lightweight 
+và nhanh hơn gấp 5 lần so với Kubernetes.
 
 ### Docker Compose
 
