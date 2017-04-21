@@ -60,6 +60,23 @@ ufw allow 22
 ufw enable
 ```
 
+## Cài đặt docker compose
+
+- We'll check the current release and if necessary, update it in the command below:
+```sh
+sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)"
+```
+
+- Next we'll set the permissions:
+```sh
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+- Then we'll verify that the installation was successful by checking the version:
+```sh
+docker-compose -v
+```
+
 # 3. Sử dụng docker
 
 Sau khi cài đặt xong, ta có thể kiểm tra tiến trình docker daemon đã chạy chưa. nếu chưa chạy thì cần khởi động lên.

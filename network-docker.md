@@ -67,4 +67,5 @@ Native, docker hỗ trợ 03 loại network như đã chạy bằng lệnh `dock
 
 # Tham khảo
 - [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started)
-- [https://kipalog.com/posts/Toi-da-dung-Docker-nhu-the-nao](https://kipalog.com/posts/Toi-da-dung-Docker-nhu-the-nao)
+- [https://kipalog.com/posts/Co-ban-ve-docker-network](https://kipalog.com/posts/Co-ban-ve-docker-network)
+- 
